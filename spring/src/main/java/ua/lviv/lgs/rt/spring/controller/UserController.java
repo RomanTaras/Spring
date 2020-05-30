@@ -1,12 +1,9 @@
 package ua.lviv.lgs.rt.spring.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ua.lviv.lgs.rt.spring.controller.domain.User;
 import ua.lviv.lgs.rt.spring.service.UserService;
-
-import java.util.List;
 
 @RestController
 public class UserController {
@@ -16,8 +13,15 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
     @GetMapping("/users")
-    public List<User> getUsers(){
-        return userService.findUsers();
+    public User getUsers(@RequestParam String email) {
+        return userService.findByEmail(email).get();
+    }
+
+    @PostMapping("/users")
+    public User createUser(@RequestBody User user) {
+        userService.createUser(user);
+        return user;
     }
 }
